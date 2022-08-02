@@ -33,7 +33,7 @@ namespace Boto::Gui {
   private:
     std::list<std::shared_ptr<Observer>> m_observers;
     std::string m_GLS_Version;
-    GLFWwindow* m_Window;
+    GLFWwindow* m_Window = nullptr;
     float m_Clear_Color[4] = {0.45f, 0.55f, 0.60f, 1.00f};
     std::list<std::shared_ptr<ImGuiWidget>> m_widgets;
 

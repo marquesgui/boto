@@ -18,6 +18,7 @@ public:
 
 private:
   std::list<std::shared_ptr<Observer>> m_observers;
+  bool isDialogFileOpen = false;
 };
 
 

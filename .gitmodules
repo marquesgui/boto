@@ -2,3 +2,7 @@
 	path = vendor/imgui
 	url = git@github.com:marquesgui/imgui.git
 	branch = docking
+[submodule "vendor/ImGuiFileDialog"]
+	path = vendor/ImGuiFileDialog
+	url = git@github.com:aiekick/ImGuiFileDialog.git
+	branch = Lib_Only

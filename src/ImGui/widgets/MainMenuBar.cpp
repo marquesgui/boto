@@ -21,7 +21,9 @@ void MainMenuBar::Draw() {
         if (ImGui::MenuItem("Project")) {}
         ImGui::EndMenu();
       }
-      if (ImGui::MenuItem("Open...")) {}
+      if (ImGui::MenuItem("Open...")) {
+        isDialogFileOpen = true;
+      }
       ImGui::EndMenu();
     }
     if (ImGui::BeginMenu("Edit")) {
@@ -33,5 +35,9 @@ void MainMenuBar::Draw() {
       ImGui::EndMenu();
     }
     ImGui::EndMainMenuBar();
+  }
+
+  if(isDialogFileOpen) {
+
   }
 }
