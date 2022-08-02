@@ -1,5 +1,6 @@
 #include "MainMenuBar.h"
-#include "../../../vendor/imgui/imgui.h"
+#include <imgui/imgui.h>
+#include <ImGuiFileDialog/ImGuiFileDialog.h>
 
 void MainMenuBar::AttachObserver(const std::shared_ptr<Observer>& observer) {
   m_observers.push_back(observer);
@@ -38,6 +39,11 @@ void MainMenuBar::Draw() {
   }
 
   if(isDialogFileOpen) {
-
+    ImGuiFileDialogFlags flags = ImGuiFileDialogFlags_Modal;
+    ImGuiFileDialog::Instance()->OpenDialog("OpenFileDialog", "Chose a folder", nullptr, ".", 1, nullptr, flags);
+    if (ImGuiFileDialog::Instance()->Display("OpenFileDialog")) {
+      ImGuiFileDialog::Instance()->Close();
+      isDialogFileOpen = false;
+    }
   }
 }

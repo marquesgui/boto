@@ -1,13 +1,13 @@
 #ifndef BOTO_CONTENTBROWSERPANEL_H
 #define BOTO_CONTENTBROWSERPANEL_H
 
-#include <string>
+#include "ImGuiWidget.h"
 
-class ContentBrowserPanel {
+class ContentBrowserPanel: public ImGuiWidget {
 public:
+   void Draw() override;
 
 private:
-  std::string projectPath;
 
 };
 

@@ -7,9 +7,11 @@
 namespace Boto::Gui {
   ImGuiLayer::~ImGuiLayer() {
     m_observers.clear();
+    m_widgets.clear();
   }
 
   void ImGuiLayer::AddWidget(const std::shared_ptr<ImGuiWidget>& widget) {
+    widget->OnAdded();
     m_widgets.push_back(widget);
   }
 
@@ -99,7 +101,6 @@ namespace Boto::Gui {
   void ImGuiLayer::begin() {
 #if __APPLE__
     glfwWaitEventsTimeout(0.1);
-//    glfwWaitEvents();
 #else
     glfwPollEvents();
 #endif

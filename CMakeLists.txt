@@ -23,6 +23,8 @@ enable_testing()
 ###          Binnary            ###
 ###################################
 file(GLOB IMGUI_SRC vendor/imgui/*.cpp)
+file(GLOB IMGUI_FILEDIALOG_SRC vendor/ImGuiFileDialog/*.cpp)
+file(GLOB IMGUI_NODE_EDITOR_SRC vendor/imgui-node-editor/*.cpp)
 
 add_executable(boto
   src/main.cpp
@@ -31,9 +33,12 @@ add_executable(boto
   src/ImGui/ImGuiLayer.cpp
   src/ImGui/widgets/ContentBrowserPanel.cpp
   src/ImGui/widgets/MainMenuBar.cpp
+  src/ImGui/widgets/NodeEditorPanel.cpp
   vendor/imgui/backends/imgui_impl_opengl3.cpp
   vendor/imgui/backends/imgui_impl_glfw.cpp
-  ${IMGUI_SRC})
+  ${IMGUI_SRC}
+  ${IMGUI_FILEDIALOG_SRC}
+  ${IMGUI_NODE_EDITOR_SRC})
 
 #file(GLOB_RECURSE BOTO_TEST_SOURCES test/*.cpp)
 #file(GLOB_RECURSE BOTO_SOURCES src/*.cpp)

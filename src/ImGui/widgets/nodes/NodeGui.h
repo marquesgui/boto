@@ -1,0 +1,4 @@
+#ifndef BOTO_NODEGUI_H
+#define BOTO_NODEGUI_H
+
+#endif //BOTO_NODEGUI_H
