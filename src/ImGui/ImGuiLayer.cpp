@@ -9,6 +9,10 @@ namespace Boto::Gui {
     m_observers.clear();
   }
 
+  void ImGuiLayer::AddWidget(const std::shared_ptr<ImGuiWidget>& widget) {
+    m_widgets.push_back(widget);
+  }
+
   void ImGuiLayer::AttachObserver(const std::shared_ptr<Observer>& observer) {
     m_observers.push_back(observer);
   }
@@ -34,9 +38,7 @@ namespace Boto::Gui {
 
   void ImGuiLayer::OnUpdate() {
     begin();
-
-    ImGui::ShowDemoWindow();
-
+    drawWidgets();
     end();
 
     if (glfwWindowShouldClose(m_Window)) {
@@ -96,7 +98,8 @@ namespace Boto::Gui {
 
   void ImGuiLayer::begin() {
 #if __APPLE__
-    glfwWaitEvents();
+    glfwWaitEventsTimeout(0.1);
+//    glfwWaitEvents();
 #else
     glfwPollEvents();
 #endif
@@ -123,5 +126,11 @@ namespace Boto::Gui {
     glfwMakeContextCurrent(backup_current_context);
 
     glfwSwapBuffers(m_Window);
+  }
+
+  void ImGuiLayer::drawWidgets() {
+    std::for_each(m_widgets.begin(), m_widgets.end(), [](const std::shared_ptr<ImGuiWidget>& widget){
+      widget->Draw();
+    });
   }
 }

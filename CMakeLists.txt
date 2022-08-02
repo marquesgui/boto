@@ -29,6 +29,8 @@ add_executable(boto
   src/Core/Application.cpp
   src/Core/Event.cpp
   src/ImGui/ImGuiLayer.cpp
+  src/ImGui/widgets/ContentBrowserPanel.cpp
+  src/ImGui/widgets/MainMenuBar.cpp
   vendor/imgui/backends/imgui_impl_opengl3.cpp
   vendor/imgui/backends/imgui_impl_glfw.cpp
   ${IMGUI_SRC})
