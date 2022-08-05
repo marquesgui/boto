@@ -3,12 +3,13 @@
 
 #include "ImGuiWidget.h"
 
-class ContentBrowserPanel: public ImGuiWidget {
-public:
-   void Draw() override;
+namespace Boto::Gui {
+  class ContentBrowserPanel : public ImGuiWidget {
+  public:
+    void Draw() override;
 
-private:
+  private:
 
-};
-
+  };
+}
 #endif //BOTO_CONTENTBROWSERPANEL_H

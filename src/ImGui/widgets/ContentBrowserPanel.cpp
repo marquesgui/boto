@@ -2,9 +2,11 @@
 
 #include "imgui/imgui.h"
 
-void ContentBrowserPanel::Draw() {
-  if(ImGui::Begin("Project")){
+namespace Boto::Gui {
+  void ContentBrowserPanel::Draw() {
+    if (ImGui::Begin("Project")) {
 
+    }
+    ImGui::End();
   }
-  ImGui::End();
 }

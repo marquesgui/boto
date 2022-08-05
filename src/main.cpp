@@ -12,10 +12,11 @@ int main() {
   auto application = std::make_shared<Boto::Application>();
 
   //Create Widgets
-  auto mainMenuWidget = std::make_shared<MainMenuBar>();
+  auto mainMenuWidget = std::make_shared<Boto::Gui::MainMenuBar>();
   mainMenuWidget->AttachObserver(application);
-  auto contentBrowserWidget = std::make_shared<ContentBrowserPanel>();
-  auto nodeEditor = std::make_shared<NodeEditorPanel>();
+  auto contentBrowserWidget = std::make_shared<Boto::Gui::ContentBrowserPanel>();
+  auto nodeEditor = std::make_shared<Boto::Gui::NodeEditorPanel>();
+//  nodeEditor->SetNodes();
 
   //Setup ImGui Layer
   auto imguiLayer = std::make_shared<Boto::Gui::ImGuiLayer>();

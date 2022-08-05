@@ -7,14 +7,18 @@
 
 namespace ne = ax::NodeEditor;
 
-class NodeEditorPanel: public ImGuiWidget {
+namespace Boto::Gui {
 
-public:
-  void Draw() override;
-  void OnAdded() override;
+  class NodeEditorPanel : public ImGuiWidget {
 
-private:
-  ne::EditorContext* m_editor;
-};
+  public:
+    void Draw() override;
+    void OnAdded() override;
+
+  private:
+    ne::EditorContext* m_editor;
+  };
+
+}
 
 #endif //BOTO_NODEEDITORPANEL_H

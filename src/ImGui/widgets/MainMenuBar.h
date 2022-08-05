@@ -6,20 +6,24 @@
 
 #include <list>
 
-class MainMenuBar: public Subject, public ImGuiWidget{
+namespace Boto::Gui {
 
-public: //Subject implementation
-  void AttachObserver(const std::shared_ptr<Observer>& observer) override;
-  void DetachObserver(Observer* observer) override;
-  void NotifyObserver(Boto::Event event) override;
+  class MainMenuBar : public Subject, public Boto::Gui::ImGuiWidget {
 
-public:
- void Draw() override;
+  public: //Subject implementation
+    void AttachObserver(const std::shared_ptr<Observer>& observer) override;
 
-private:
-  std::list<std::shared_ptr<Observer>> m_observers;
-  bool isDialogFileOpen = false;
-};
+    void DetachObserver(Observer* observer) override;
 
+    void NotifyObserver(Boto::Event event) override;
+
+  public:
+    void Draw() override;
+
+  private:
+    std::list<std::shared_ptr<Observer>> m_observers;
+    bool isDialogFileOpen = false;
+  };
+}
 
 #endif //BOTO_MAINMENUBAR_H
