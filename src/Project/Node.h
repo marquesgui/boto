@@ -1,50 +1,59 @@
 #ifndef BOTO_NODE_H
 #define BOTO_NODE_H
 
-#include <list>
+
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace Boto::Project {
 
-  class Node;
-
-  enum class OutputType {
-    Number,
-    String
+  enum class PinType {
+    Flow,
+    Bool,
+    Int,
+    Float,
+    String,
+    Object,
+    Function,
+    Delegate,
   };
 
-  enum class InputType {
-    Number,
-    String
+  enum class PinKind {
+    Output,
+    Input
   };
 
-  class Output {
-    OutputType type;
-    Node* node;
+  struct Node;
+
+  struct Pin {
+    int Id;
+    std::shared_ptr<Node> Node;
+    std::string Name;
+    PinType Type;
+    PinKind Kind;
+
+    Pin(int id, std::string  name, PinType type, );
+
   };
 
-  class Input {
-    InputType type;
-    Node* node;
+  enum class NodeType
+  {
+    Blueprint,
+    Simple,
+    Tree,
+    Comment,
+    Houdini
   };
 
-  enum class NodeType {
+  struct Node {
+    int Id;
+    std::string Name;
+    std::vector<Pin> Inputs;
+    std::vector<Pin> Outputs;
+    NodeType type;
 
-  };
-
-  class Node {
-  public:
-    Node(std::string  Name, NodeType type);
-    virtual ~Node() = default;
-
-  public:
-    const std::string Name;
-    const NodeType Type;
-
-  private:
-    std::list<std::shared_ptr<Input>> m_inputs;
-    std::list<std::shared_ptr<Output>> m_outputs;
+    Node(int id, std::string name);
   };
 }
 

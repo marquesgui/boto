@@ -3,6 +3,7 @@
 
 #include "Subject.h"
 #include "Layer.h"
+#include "../Project/Solution.h"
 
 #include <list>
 #include <stack>
@@ -23,12 +24,12 @@ namespace Boto{
 
   private:
     bool m_isRunning;
-    std::list<std::shared_ptr<Layer>> m_layers;
-    std::stack<Event> m_events;
+    std::list<std::shared_ptr<Layer>> m_layers; std::stack<Event> m_events;
+    std::shared_ptr<Boto::Project::Solution> m_solution;
 
   private:
     void handleEvents();
-
+    void loadSolution();
   };
 
 }

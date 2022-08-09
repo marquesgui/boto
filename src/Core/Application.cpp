@@ -35,3 +35,10 @@ void Boto::Application::handleEvents() {
     }
   }
 }
+
+/**
+ * Mocked
+ */
+void Boto::Application::loadSolution() {
+  m_solution = std::make_shared<Project::Solution>();
+}

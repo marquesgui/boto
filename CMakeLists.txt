@@ -35,7 +35,8 @@ add_executable(boto
   src/ImGui/widgets/MainMenuBar.cpp
   src/ImGui/widgets/NodeEditorPanel.cpp
   src/Project/Node.cpp
-  src/Project/FLow.cpp
+  src/Project/Flow.cpp
+  src/Project/Solution.cpp
   vendor/imgui/backends/imgui_impl_opengl3.cpp
   vendor/imgui/backends/imgui_impl_glfw.cpp
   ${IMGUI_SRC}
