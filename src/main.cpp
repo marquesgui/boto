@@ -6,6 +6,8 @@
 #include "ImGui/widgets/ContentBrowserPanel.h"
 #include "ImGui/widgets/NodeEditorPanel.h"
 
+#include "Project/Flow.h"
+
 int main() {
 
   //Create application
@@ -16,7 +18,9 @@ int main() {
   mainMenuWidget->AttachObserver(application);
   auto contentBrowserWidget = std::make_shared<Boto::Gui::ContentBrowserPanel>();
   auto nodeEditor = std::make_shared<Boto::Gui::NodeEditorPanel>();
-//  nodeEditor->SetNodes();
+
+  //Mock (setup node editor)
+  nodeEditor->SetFlow(std::make_shared<Boto::Project::Flow>());
 
   //Setup ImGui Layer
   auto imguiLayer = std::make_shared<Boto::Gui::ImGuiLayer>();

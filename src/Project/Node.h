@@ -33,7 +33,7 @@ namespace Boto::Project {
     PinType Type;
     PinKind Kind;
 
-    Pin(int id, std::string  name, PinType type, );
+    Pin(int id, std::string  name, PinType type, PinKind kind);
 
   };
 
@@ -51,9 +51,17 @@ namespace Boto::Project {
     std::string Name;
     std::vector<Pin> Inputs;
     std::vector<Pin> Outputs;
-    NodeType type;
+    NodeType Type;
 
-    Node(int id, std::string name);
+    Node(int id, std::string name, NodeType type);
+  };
+
+  struct Link {
+    int Id;
+    int StartPinId;
+    int EndPinId;
+
+    Link(int id, int startPinId, int endPinId);
   };
 }
 

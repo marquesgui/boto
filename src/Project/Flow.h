@@ -11,9 +11,13 @@ namespace Boto::Project {
 
   public:
     Flow();
+    std::list<std::shared_ptr<Node>>& GetNodes();
 
   private:
     std::list<std::shared_ptr<Node>> m_nodes;
+
+  private:
+    static void buildNode(const std::shared_ptr<Node>& node);
   };
 }
 

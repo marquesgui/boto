@@ -35,7 +35,6 @@ namespace Boto::Gui {
   }
 
   void ImGuiLayer::OnDetach() {
-
   }
 
   void ImGuiLayer::OnUpdate() {

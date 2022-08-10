@@ -4,6 +4,7 @@
 #include "../Core/Layer.h"
 #include "../Core/Subject.h"
 #include  "widgets/ImGuiWidget.h"
+#include "../Project/Flow.h"
 
 #include <memory>
 #include <list>
@@ -36,6 +37,7 @@ namespace Boto::Gui {
     GLFWwindow* m_Window = nullptr;
     float m_Clear_Color[4] = {0.45f, 0.55f, 0.60f, 1.00f};
     std::list<std::shared_ptr<ImGuiWidget>> m_widgets;
+    std::shared_ptr<Boto::Project::Flow> m_currentFlow;
 
   private:
     void createWindowContext();
