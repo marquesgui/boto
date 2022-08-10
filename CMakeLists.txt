@@ -26,6 +26,8 @@ file(GLOB IMGUI_SRC vendor/imgui/*.cpp)
 file(GLOB IMGUI_FILEDIALOG_SRC vendor/ImGuiFileDialog/*.cpp)
 file(GLOB IMGUI_NODE_EDITOR_SRC vendor/imgui-node-editor/*.cpp)
 
+#add_compile_definitions(IMGUI_DEFINE_MATH_OPERATORS)
+
 add_executable(boto
   src/main.cpp
   src/Core/Application.cpp
@@ -34,6 +36,7 @@ add_executable(boto
   src/ImGui/widgets/ContentBrowserPanel.cpp
   src/ImGui/widgets/MainMenuBar.cpp
   src/ImGui/widgets/NodeEditorPanel.cpp
+  src/ImGui/widgets/nodes/PinIcon.cpp
   src/Project/Node.cpp
   src/Project/Flow.cpp
   src/Project/Solution.cpp

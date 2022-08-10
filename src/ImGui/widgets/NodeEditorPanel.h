@@ -22,6 +22,14 @@ namespace Boto::Gui {
   private:
     ne::EditorContext* m_editor;
     std::shared_ptr<Project::Flow> m_flow;
+    std::shared_ptr<Project::Pin> m_newLinkPin = nullptr;
+    static const int m_pinIconSize = 14;
+
+  private:
+    static bool canCreateLink(const std::shared_ptr<Project::Pin>& pin1, const std::shared_ptr<Project::Pin>& pin2);
+    bool isPinLinked(int id);
+    void drawPinIcon(std::shared_ptr<Project::Pin>& pin, bool connected, int alpha);
+    ImColor getPinColor(Project::PinType type);
   };
 
 }

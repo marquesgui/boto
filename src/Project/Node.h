@@ -49,8 +49,8 @@ namespace Boto::Project {
   struct Node {
     int Id;
     std::string Name;
-    std::vector<Pin> Inputs;
-    std::vector<Pin> Outputs;
+    std::vector<std::shared_ptr<Pin>> Inputs;
+    std::vector<std::shared_ptr<Pin>> Outputs;
     NodeType Type;
 
     Node(int id, std::string name, NodeType type);
