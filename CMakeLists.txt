@@ -32,16 +32,19 @@ add_executable(boto
   src/main.cpp
   src/Core/Application.cpp
   src/Core/Event.cpp
+  src/Utils/IdGenerator.cpp
   src/ImGui/ImGuiLayer.cpp
   src/ImGui/widgets/ContentBrowserPanel.cpp
   src/ImGui/widgets/MainMenuBar.cpp
   src/ImGui/widgets/NodeEditorPanel.cpp
-  src/ImGui/widgets/nodes/PinIcon.cpp
+  src/ImGui/widgets/Nodes/PinIcon.cpp
+  src/ImGui/widgets/Nodes/Draw.cpp
   src/Project/Node.cpp
   src/Project/Flow.cpp
   src/Project/Solution.cpp
   vendor/imgui/backends/imgui_impl_opengl3.cpp
   vendor/imgui/backends/imgui_impl_glfw.cpp
+  vendor/imgui/misc/cpp/imgui_stdlib.cpp
   ${IMGUI_SRC}
   ${IMGUI_FILEDIALOG_SRC}
   ${IMGUI_NODE_EDITOR_SRC})

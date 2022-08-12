@@ -1,6 +1,5 @@
-#ifndef BOTO_NODE_H
-#define BOTO_NODE_H
-
+#ifndef BOTO_PROJECT_NODE_H
+#define BOTO_PROJECT_NODE_H
 
 #include <memory>
 #include <string>
@@ -17,11 +16,12 @@ namespace Boto::Project {
     Object,
     Function,
     Delegate,
+    Event,
   };
 
   enum class PinKind {
-    Output,
-    Input
+    Input,
+    Output
   };
 
   struct Node;
@@ -39,21 +39,20 @@ namespace Boto::Project {
 
   enum class NodeType
   {
-    Blueprint,
-    Simple,
-    Tree,
-    Comment,
-    Houdini
+    Default,
+    String
   };
 
   struct Node {
+  public:
     int Id;
     std::string Name;
     std::vector<std::shared_ptr<Pin>> Inputs;
     std::vector<std::shared_ptr<Pin>> Outputs;
-    NodeType Type;
 
-    Node(int id, std::string name, NodeType type);
+  public:
+    Node(int id, std::string name);
+    virtual NodeType GetType() = 0;
   };
 
   struct Link {
@@ -63,6 +62,18 @@ namespace Boto::Project {
 
     Link(int id, int startPinId, int endPinId);
   };
+
+  //Nodes
+  struct StringNode : public Node {
+    std::string Value;
+    explicit StringNode(int id);
+    NodeType GetType() override;
+  };
+
+  struct HttpRequestEventNode : public Node {
+    explicit HttpRequestEventNode(int id);
+    NodeType GetType() override;
+  };
 }
 
-#endif //BOTO_NODE_H
+#endif //BOTO_PROJECT_NODE

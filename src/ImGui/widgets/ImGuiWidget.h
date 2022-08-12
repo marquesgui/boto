@@ -1,5 +1,5 @@
-#ifndef BOTO_IMGUIWIDGET_H
-#define BOTO_IMGUIWIDGET_H
+#ifndef BOTO_GUI_IMGUIWIDGET_H
+#define BOTO_GUI_IMGUIWIDGET_H
 
 namespace Boto::Gui {
   class ImGuiWidget {
@@ -10,4 +10,4 @@ namespace Boto::Gui {
     virtual void OnAdded() {};
   };
 }
-#endif //BOTO_IMGUIWIDGET_H
+#endif //BOTO_GUI_IMGUIWIDGET_H

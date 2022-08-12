@@ -1,5 +1,5 @@
-#ifndef BOTO_FLOW_H
-#define BOTO_FLOW_H
+#ifndef BOTO_PROJECT_FLOW_H
+#define BOTO_PROJECT_FLOW_H
 
 #include "Node.h"
 
@@ -11,8 +11,8 @@ namespace Boto::Project {
 
   public:
     Flow();
-    const std::list<std::shared_ptr<Node>>& GetNodes();
-    const std::list<std::shared_ptr<Link>>& GetLinks();
+    std::list<std::shared_ptr<Node>>& GetNodes();
+    std::list<std::shared_ptr<Link>>& GetLinks();
 
   private:
     std::list<std::shared_ptr<Node>> m_nodes;
@@ -23,4 +23,4 @@ namespace Boto::Project {
   };
 }
 
-#endif //BOTO_FLOW_H
+#endif //BOTO_PROJECT_FLOW_H

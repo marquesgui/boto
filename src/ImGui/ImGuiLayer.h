@@ -1,5 +1,5 @@
-#ifndef BOTO_IMGUILAYER_H
-#define BOTO_IMGUILAYER_H
+#ifndef BOTO_GUI_IMGUILAYER_H
+#define BOTO_GUI_IMGUILAYER_H
 
 #include "../Core/Layer.h"
 #include "../Core/Subject.h"
@@ -47,4 +47,4 @@ namespace Boto::Gui {
     void drawWidgets();
   };
 }
-#endif //BOTO_IMGUILAYER_H
+#endif //BOTO_GUI_IMGUILAYER_H

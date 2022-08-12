@@ -1,5 +1,5 @@
-#ifndef BOTO_PINICON_H
-#define BOTO_PINICON_H
+#ifndef BOTO_GUI_PINICON_H
+#define BOTO_GUI_PINICON_H
 
 #include <imgui/imgui.h>
 
@@ -19,4 +19,4 @@ namespace Boto::Gui::Node {
   };
 }
 
-#endif //BOTO_PINICON_H
+#endif //BOTO_GUI_PINICON_H

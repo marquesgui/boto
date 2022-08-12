@@ -1,5 +1,5 @@
-#ifndef BOTO_NODEEDITORPANEL_H
-#define BOTO_NODEEDITORPANEL_H
+#ifndef BOTO_GUI_NODEEDITORPANEL_H
+#define BOTO_GUI_NODEEDITORPANEL_H
 
 #include "ImGuiWidget.h"
 #include "../../Project/Flow.h"
@@ -23,15 +23,14 @@ namespace Boto::Gui {
     ne::EditorContext* m_editor;
     std::shared_ptr<Project::Flow> m_flow;
     std::shared_ptr<Project::Pin> m_newLinkPin = nullptr;
-    static const int m_pinIconSize = 14;
+    std::shared_ptr<Project::Pin> m_newNodeLinkPin = nullptr;
+    bool m_isCreatingNewNode = false;
 
   private:
-    static bool canCreateLink(const std::shared_ptr<Project::Pin>& pin1, const std::shared_ptr<Project::Pin>& pin2);
-    bool isPinLinked(int id);
-    void drawPinIcon(std::shared_ptr<Project::Pin>& pin, bool connected, int alpha);
-    ImColor getPinColor(Project::PinType type);
+    bool canCreateLink(const std::shared_ptr<Project::Pin>& pin1, const std::shared_ptr<Project::Pin>& pin2);
+    std::shared_ptr<Project::Pin> findPin(ne::PinId id);
   };
 
 }
 
-#endif //BOTO_NODEEDITORPANEL_H
+#endif //BOTO_GUI_NODEEDITORPANEL_H

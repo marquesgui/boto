@@ -1,5 +1,5 @@
-#ifndef BOTO_MAINMENUBAR_H
-#define BOTO_MAINMENUBAR_H
+#ifndef BOTO_GUI_MAINMENUBAR_H
+#define BOTO_GUI_MAINMENUBAR_H
 
 #include "../../Core/Subject.h"
 #include "ImGuiWidget.h"
@@ -26,4 +26,4 @@ namespace Boto::Gui {
   };
 }
 
-#endif //BOTO_MAINMENUBAR_H
+#endif //BOTO_GUI_MAINMENUBAR_H

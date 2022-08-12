@@ -1,20 +1,24 @@
 #include "Flow.h"
+#include "../Utils/IdGenerator.h"
 
 namespace Boto::Project {
 
-  Flow::Flow() {
-    int sharedId = 1;
+  namespace IdGenerator = Utils::IdGenerator;
 
-    m_nodes.push_back(std::make_shared<Node>(sharedId++, "Http Event", NodeType::Blueprint));
-    m_nodes.back()->Outputs.emplace_back(std::make_shared<Pin>(sharedId++, "Receveid", PinType::Flow, PinKind::Output));
-    buildNode(m_nodes.back());
+  Flow::Flow() {
+    m_nodes.push_back(std::make_shared<StringNode>(IdGenerator::GetNextId()));
+    m_nodes.push_back(std::make_shared<HttpRequestEventNode>(IdGenerator::GetNextId()));
+
+    for(auto& node : m_nodes) {
+      buildNode(node);
+    }
   }
 
-  const std::list<std::shared_ptr<Node>>& Flow::GetNodes() {
+  std::list<std::shared_ptr<Node>>& Flow::GetNodes() {
     return m_nodes;
   }
 
-  const std::list<std::shared_ptr<Link>>& Flow::GetLinks() {
+  std::list<std::shared_ptr<Link>>& Flow::GetLinks() {
     return m_links;
   }
 
