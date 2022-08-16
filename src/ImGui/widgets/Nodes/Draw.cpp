@@ -32,6 +32,8 @@ namespace Boto::Gui::Node {
           return {255, 48, 48};
         case Project::PinType::Event:
           return {240, 43, 89};
+        case Project::PinType::Json:
+          return {250, 217, 107};
       }
     }
 
@@ -44,6 +46,7 @@ namespace Boto::Gui::Node {
         case Project::PinType::Flow:
           iconType = Node::IconType::Flow;
           break;
+        case Project::PinType::Json:
         case Project::PinType::Bool:
         case Project::PinType::Int:
         case Project::PinType::Float:
@@ -101,8 +104,8 @@ namespace Boto::Gui::Node {
           ImGui::BeginHorizontal("Content");
 
             ImGui::BeginVertical("Inputs");
+              ne::PushStyleVar(ne::StyleVar_PivotAlignment, ImVec2(0, 0.5f));
               for (auto& input: node->Inputs) {
-                ne::PushStyleVar(ne::StyleVar_PivotAlignment, ImVec2(0, 0.5f));
                 ne::BeginPin(input->Id, ne::PinKind::Input);
                   ImGui::BeginHorizontal(&input->Id);
                     drawPinIcon(input, isPinLinked(input->Id, links), 255);
@@ -111,23 +114,25 @@ namespace Boto::Gui::Node {
                     ImGui::Spring(0);
                  ImGui::EndHorizontal();
                 ne::EndPin();
-                ne::PopStyleVar();
               }
+              ne::PopStyleVar();
             ImGui::EndVertical();
 
             ImGui::Spring(0);
 
             ImGui::BeginVertical("Outputs");
+              ne::PushStyleVar(ne::StyleVar_PivotAlignment, ImVec2(1.0f, 0.5f));
               for (auto& output : node->Outputs) {
                 ne::BeginPin(output->Id, ne::PinKind::Output);
                   ImGui::BeginHorizontal(&output->Id);
                     ImGui::TextUnformatted(output->Name.c_str());
                     ImGui::Spring(0);
                     drawPinIcon(output, isPinLinked(output->Id, links), 255);
-                    ImGui::Spring(0);
                 ImGui::EndHorizontal();
                 ne::EndPin();
               }
+              ne::PopStyleVar();
+              ImGui::Spring();
             ImGui::EndVertical();
           ImGui::EndHorizontal();
 

@@ -29,6 +29,8 @@ namespace Boto::Gui {
   private:
     bool canCreateLink(const std::shared_ptr<Project::Pin>& pin1, const std::shared_ptr<Project::Pin>& pin2);
     std::shared_ptr<Project::Pin> findPin(ne::PinId id);
+    std::shared_ptr<Project::Node> findNode(const ne::NodeId& id);
+    std::shared_ptr<Project::Link> findLink(const ne::LinkId& id);
   };
 
 }

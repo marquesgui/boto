@@ -11,6 +11,8 @@ namespace Boto::Gui {
     ne::SetCurrentEditor(m_editor);
     if (ImGui::Begin("Node Editor Panel", nullptr)) {
       ne::Begin("ne", ImVec2(0.0f, 0.0f));
+      auto cursorTopLeft = ImGui::GetCursorScreenPos();
+
       for (auto& node: m_flow->GetNodes()) {
         Node::DrawNode(node, m_flow->GetLinks());
       }
@@ -78,9 +80,9 @@ namespace Boto::Gui {
               m_isCreatingNewNode = true;
               m_newNodeLinkPin = findPin(pinId);
               m_newLinkPin = nullptr;
-//              ne::Suspend();
-//              ImGui::OpenPopup("Create New Node");
-//              ne::Resume();
+              ne::Suspend();
+              ImGui::OpenPopup("Create New Node");
+              ne::Resume();
             }
           }
 
@@ -89,7 +91,172 @@ namespace Boto::Gui {
         }
 
         ne::EndCreate();
+
+        if (ne::BeginDelete()) {
+          ne::LinkId linkId = 0;
+          while (ne::QueryDeletedLink(&linkId)) {
+            if(ne::AcceptDeletedItem()) {
+              auto id = std::find_if(m_flow->GetLinks().begin(), m_flow->GetLinks().end(), [linkId](auto& link) -> bool {
+                return link->Id == linkId.Get();
+              });
+              if( id != m_flow->GetLinks().end()) {
+                m_flow->GetLinks().erase(id);
+              }
+            }
+          }
+
+          ne::NodeId nodeId = 0;
+          while (ne::QueryDeletedNode(&nodeId)) {
+            if(ne::AcceptDeletedItem()) {
+              auto id = std::find_if(m_flow->GetNodes().begin(), m_flow->GetNodes().end(), [nodeId](auto& node) -> bool {
+                return node->Id == nodeId.Get();
+              });
+              if(id != m_flow->GetNodes().end()) {
+                m_flow->GetNodes().erase(id);
+              }
+            }
+          }
+        }
+        ne::EndDelete();
       }
+
+      ImGui::SetCursorScreenPos(cursorTopLeft);
+
+      //Popup menus
+      auto openPopupPosition = ImGui::GetMousePos();
+
+      ne::Suspend();
+      static ne::NodeId contextNodeId = 0;
+      static ne::PinId contextPinId = 0;
+      static ne::LinkId contextLinkId = 0;
+      if(ne::ShowNodeContextMenu(&contextNodeId)) {
+        ImGui::OpenPopup("Node Context Menu");
+      } else if (ne::ShowPinContextMenu(&contextPinId)) {
+        ImGui::OpenPopup("Pin Context Menu");
+      } else if (ne::ShowLinkContextMenu(&contextLinkId)) {
+        ImGui::OpenPopup("Link Context Menu");
+      } else if (ne::ShowBackgroundContextMenu()) {
+        ImGui::OpenPopup("Create New Node");
+        m_newNodeLinkPin = nullptr;
+      }
+      ne::Resume();
+
+      //Node Context Menu
+      ne::Suspend();
+      ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8,8));
+      if(ImGui::BeginPopup("Node Context Menu")) {
+        auto node = findNode(contextNodeId);
+
+        ImGui::TextUnformatted("Node Menu");
+        ImGui::Separator();
+        if(node) {
+          ImGui::Text("ID: %d", node->Id);
+          ImGui::Text("Inputs: %d", (int)node->Inputs.size());
+          ImGui::Text("Outputs: %d", (int)node->Outputs.size());
+        } else {
+          ImGui::Text("Unknown node: %p", contextNodeId.AsPointer());
+        }
+        ImGui::Separator();
+        if(ImGui::MenuItem("Delete")) {
+          ne::DeleteNode(contextNodeId);
+        }
+        ImGui::EndPopup();
+      }
+
+      //Pin Context Menu
+      if(ImGui::BeginPopup("Pin Context Menu")) {
+        auto pin = findPin(contextPinId);
+
+        ImGui::TextUnformatted("Pin Menu");
+        ImGui::Separator();
+        if(pin) {
+          ImGui::Text("ID: %d", pin->Id);
+          ImGui::Text("Type: %s", Project::PinTypeAsString(pin->Type).c_str());
+          if(pin->Node) {
+            ImGui::Text("Node: %d", pin->Node->Id);
+          } else {
+            ImGui::Text("Node: %s", "<none>");
+          }
+        } else {
+          ImGui::Text("Unknown pin: %p", contextPinId.AsPointer());
+        }
+        ImGui::EndPopup();
+      }
+
+      //Link Context Menu
+      if (ImGui::BeginPopup("Link Context Menu"))
+      {
+        auto link = findLink(contextLinkId);
+
+        ImGui::TextUnformatted("Link Menu");
+        ImGui::Separator();
+        if (link)
+        {
+          ImGui::Text("ID: %p", &link->Id);
+          ImGui::Text("From: %d", link->StartPinId);
+          ImGui::Text("To: %d", link->EndPinId);
+        }
+        else
+          ImGui::Text("Unknown link: %p", contextLinkId.AsPointer());
+        ImGui::Separator();
+        if (ImGui::MenuItem("Delete"))
+          ne::DeleteLink(contextLinkId);
+        ImGui::EndPopup();
+      }
+
+      //Create New Node Context Menu
+      if(ImGui::BeginPopup("Create New Node")) {
+        auto newNodePosition = openPopupPosition;
+
+        std::shared_ptr<Project::Node> node = nullptr;
+        if(ImGui::BeginMenu("Variables")) {
+          if(ImGui::MenuItem("String")) {
+            node = std::make_shared<Project::StringNode>(Utils::IdGenerator::GetNextId());
+          }
+          ImGui::EndMenu();
+        }
+        ImGui::Separator();
+        if(ImGui::BeginMenu("Events")) {
+          if(ImGui::MenuItem("HttpRequestEvent")) {
+            node = std::make_shared<Project::HttpRequestEventNode>(Utils::IdGenerator::GetNextId());
+          }
+          ImGui::EndMenu();
+        }
+        ImGui::Separator();
+        if(ImGui::BeginMenu("Handlers")) {
+          if(ImGui::MenuItem("HttpController")) {
+            node = std::make_shared<Project::HttpController>(Utils::IdGenerator::GetNextId());
+          }
+          ImGui::EndMenu();
+        }
+
+        if(node) {
+          m_isCreatingNewNode = false;
+          m_flow->GetNodes().push_back(node);
+
+          ne::SetNodePosition(node->Id, newNodePosition);
+          if(auto startPin = m_newNodeLinkPin) {
+            auto& pins = startPin->Kind == Project::PinKind::Input ? node->Outputs : node->Inputs;
+            for (auto& pin: pins) {
+              if(canCreateLink(startPin, pin)) {
+                auto endPin = pin;
+                if(startPin->Kind == Project::PinKind::Input) {
+                  std::swap(startPin, endPin);
+                }
+
+                m_flow->GetLinks().emplace_back(std::make_shared<Project::Link>(Utils::IdGenerator::GetNextId(), startPin->Id, endPin->Id));
+                break;
+              }
+            }
+          }
+        }
+
+        ImGui::EndPopup();
+      } else {
+        m_isCreatingNewNode = false;
+      }
+      ImGui::PopStyleVar();
+      ne::Resume();
       ne::End();
     }
     ImGui::End();
@@ -131,6 +298,24 @@ namespace Boto::Gui {
       }
     }
 
+    return nullptr;
+  }
+
+  std::shared_ptr<Project::Node> NodeEditorPanel::findNode(const ne::NodeId& id) {
+    for (auto& node : m_flow->GetNodes()) {
+      if(node->Id == id.Get()) {
+        return node;
+      }
+    }
+    return nullptr;
+  }
+
+  std::shared_ptr<Project::Link> NodeEditorPanel::findLink(const ne::LinkId& id) {
+    for (auto& link : m_flow->GetLinks()) {
+      if(link->Id == id.Get()) {
+        return link;
+      }
+    }
     return nullptr;
   }
 }

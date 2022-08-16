@@ -8,10 +8,6 @@ namespace Boto::Project {
   Flow::Flow() {
     m_nodes.push_back(std::make_shared<StringNode>(IdGenerator::GetNextId()));
     m_nodes.push_back(std::make_shared<HttpRequestEventNode>(IdGenerator::GetNextId()));
-
-    for(auto& node : m_nodes) {
-      buildNode(node);
-    }
   }
 
   std::list<std::shared_ptr<Node>>& Flow::GetNodes() {
@@ -20,15 +16,5 @@ namespace Boto::Project {
 
   std::list<std::shared_ptr<Link>>& Flow::GetLinks() {
     return m_links;
-  }
-
-  void Flow::buildNode(const std::shared_ptr<Node>& node) {
-    std::for_each(node->Inputs.begin(), node->Inputs.end(), [&](const std::shared_ptr<Pin>& pin) -> void {
-      pin->Node = node;
-    });
-
-    std::for_each(node->Outputs.begin(), node->Outputs.end(), [&](const std::shared_ptr<Pin>& pin) -> void {
-      pin->Node = node;
-    });
   }
 }

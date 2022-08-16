@@ -17,7 +17,10 @@ namespace Boto::Project {
     Function,
     Delegate,
     Event,
+    Json,
   };
+
+  std::string PinTypeAsString(PinType& type);
 
   enum class PinKind {
     Input,
@@ -28,12 +31,13 @@ namespace Boto::Project {
 
   struct Pin {
     int Id;
-    std::shared_ptr<Node> Node;
+    Node* Node;
     std::string Name;
     PinType Type;
     PinKind Kind;
 
     Pin(int id, std::string  name, PinType type, PinKind kind);
+    ~Pin();
 
   };
 
@@ -66,12 +70,18 @@ namespace Boto::Project {
   //Nodes
   struct StringNode : public Node {
     std::string Value;
+
     explicit StringNode(int id);
     NodeType GetType() override;
   };
 
   struct HttpRequestEventNode : public Node {
     explicit HttpRequestEventNode(int id);
+    NodeType GetType() override;
+  };
+
+  struct HttpController : public Node {
+    explicit HttpController(int id);
     NodeType GetType() override;
   };
 }
