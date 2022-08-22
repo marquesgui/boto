@@ -55,10 +55,10 @@ namespace Boto::Gui {
               if (endPin == startPin) {
                 ne::RejectNewItem(ImColor(255, 0, 0), 2.0f);
               } else if (endPin->Kind == startPin->Kind) {
-                showLabel("Both are output, genius", ImColor(45, 32, 32, 180));
+                showLabel("- Both are output, genius!", ImColor(45, 32, 32, 180));
                 ne::RejectNewItem(ImColor(255, 0, 0), 2.0f);
               } else if (endPin->Type != startPin->Type) {
-                showLabel("Really? Different types? Really?", ImColor(45, 32, 32, 180));
+                showLabel("- Really? Different types? Really?", ImColor(45, 32, 32, 180));
                 ne::RejectNewItem(ImColor(255, 128, 128), 2.0f);
               } else {
                 showLabel("+ Create Link", ImColor(32, 45, 32, 180));
@@ -225,7 +225,7 @@ namespace Boto::Gui {
         ImGui::Separator();
         if(ImGui::BeginMenu("Handlers")) {
           if(ImGui::MenuItem("HttpController")) {
-            node = std::make_shared<Project::HttpController>(Utils::IdGenerator::GetNextId());
+            node = std::make_shared<Project::HttpControllerNode>(Utils::IdGenerator::GetNextId());
           }
           ImGui::EndMenu();
         }

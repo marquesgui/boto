@@ -56,7 +56,7 @@ namespace Boto::Project {
 
   public:
     Node(int id, std::string name);
-    virtual NodeType GetType() = 0;
+    virtual NodeType GetType();
   };
 
   struct Link {
@@ -80,9 +80,12 @@ namespace Boto::Project {
     NodeType GetType() override;
   };
 
-  struct HttpController : public Node {
-    explicit HttpController(int id);
-    NodeType GetType() override;
+  struct HttpControllerNode : public Node {
+    explicit HttpControllerNode(int id);
+  };
+
+  struct JsonExtractorNode : public Node {
+    explicit JsonExtractorNode(int id);
   };
 }
 

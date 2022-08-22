@@ -65,16 +65,17 @@ namespace Boto::Project {
   //HttpRequestEventNode
   HttpRequestEventNode::HttpRequestEventNode(int id) : Node(id, "HttpRequestEvent") {
     Inputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "path", PinType::String, PinKind::Input));
-    Inputs.back()->Node = this;
-
-    Inputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "parameters", PinType::String, PinKind::Input));
-    Inputs.back()->Node = this;
-
     Inputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "schema", PinType::Json, PinKind::Input));
-    Inputs.back()->Node = this;
+    for (auto& input : Inputs) {
+      input->Node = this;
+    }
 
-    Outputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "on received", PinType::Event, PinKind::Output));
-    Outputs.back()->Node = this;
+    Outputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "received", PinType::Flow, PinKind::Output));
+    Outputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "parameters", PinType::Json, PinKind::Output));
+    Outputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "body", PinType::Json, PinKind::Output));
+    for (auto& output : Outputs) {
+      output->Node = this;
+    }
   }
 
   NodeType HttpRequestEventNode::GetType() {
@@ -82,25 +83,34 @@ namespace Boto::Project {
   }
 
   //HttpController
-  HttpController::HttpController(int id) : Node(id, "HttpController") {
-    Inputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "GET", PinType::Event, PinKind::Input));
-    Inputs.back()->Node = this;
+  HttpControllerNode::HttpControllerNode(int id) : Node(id, "HttpController") {
+    Inputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "", PinType::Flow, PinKind::Input));
+    for(auto& input : Inputs) {
+      input->Node = this;
+    }
 
-    Inputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "POST", PinType::Event, PinKind::Input));
-    Inputs.back()->Node = this;
-
-    Inputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "PUT", PinType::Event, PinKind::Input));
-    Inputs.back()->Node = this;
-
-    Inputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "PATCH", PinType::Event, PinKind::Input));
-    Inputs.back()->Node = this;
-
-
-    Outputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "Body", PinType::Json, PinKind::Output));
-    Outputs.back()->Node = this;
+    Outputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "get", PinType::Flow, PinKind::Output));
+    Outputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "post", PinType::Flow, PinKind::Output));
+    Outputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "put", PinType::Flow, PinKind::Output));
+    Outputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "patch", PinType::Flow, PinKind::Output));
+    for(auto& output : Outputs){
+      output->Node = this;
+    }
   }
 
-  NodeType HttpController::GetType() {
-    return NodeType::Default;
+  //JsonExtractorNode
+  JsonExtractorNode::JsonExtractorNode(int id) : Node(id, "JsonExtractor"){
+    Inputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "", PinType::Flow, PinKind::Input));
+    Inputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "json", PinType::Json, PinKind::Input));
+    Inputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "json path", PinType::String, PinKind::Input));
+    for(auto& input : Inputs) {
+      input->Node = this;
+    }
+
+    Outputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "", PinType::Flow, PinKind::Output));
+    Outputs.push_back(std::make_shared<Pin>(IdGenerator::GetNextId(), "value", PinType::String, PinKind::Output));
+    for(auto& output : Outputs) {
+      output->Node = this;
+    }
   }
 }

@@ -85,7 +85,7 @@ namespace Boto::Gui::Node {
     }
 
     void drawDefaultNode(const std::shared_ptr<pj::Node>& node, const std::list<std::shared_ptr<pj::Link>>& links) {
-      ImGui::PushID(&node->Id);
+      ImGui::PushID(node->Id);
 
       ne::BeginNode(node->Id);
         ImGui::BeginVertical("node");
@@ -98,7 +98,7 @@ namespace Boto::Gui::Node {
           ImGui::EndHorizontal();
 
           //Spacing between header and content
-          ImGui::Dummy(ImVec2(0, 28));
+          ImGui::Dummy(ImVec2(0, 14));
 
           //Content
           ImGui::BeginHorizontal("Content");
@@ -115,6 +115,7 @@ namespace Boto::Gui::Node {
                  ImGui::EndHorizontal();
                 ne::EndPin();
               }
+              ImGui::Spring(1);
               ne::PopStyleVar();
             ImGui::EndVertical();
 
@@ -123,17 +124,22 @@ namespace Boto::Gui::Node {
             ImGui::BeginVertical("Outputs");
               ne::PushStyleVar(ne::StyleVar_PivotAlignment, ImVec2(1.0f, 0.5f));
               for (auto& output : node->Outputs) {
+                ImGui::BeginHorizontal(&output->Id);
+                ImGui::Spring(1);
                 ne::BeginPin(output->Id, ne::PinKind::Output);
-                  ImGui::BeginHorizontal(&output->Id);
+//                  ImGui::BeginHorizontal(&output->Id);
+                    ImGui::Spring(0);
                     ImGui::TextUnformatted(output->Name.c_str());
                     ImGui::Spring(0);
                     drawPinIcon(output, isPinLinked(output->Id, links), 255);
-                ImGui::EndHorizontal();
+//                  ImGui::EndHorizontal();
                 ne::EndPin();
+                ImGui::EndHorizontal();
               }
               ne::PopStyleVar();
-              ImGui::Spring();
+              ImGui::Spring(1);
             ImGui::EndVertical();
+
           ImGui::EndHorizontal();
 
         ImGui::EndVertical();
@@ -145,20 +151,20 @@ namespace Boto::Gui::Node {
 
   void drawStringNode(const std::shared_ptr<pj::Node>& node, const std::list<std::shared_ptr<pj::Link>>& links) {
     auto stringNode = std::dynamic_pointer_cast<Project::StringNode>(node);
-    ImGui::PushID(&node->Id);
+    ImGui::PushID(stringNode->Id);
 
-      ne::BeginNode(node->Id);
+      ne::BeginNode(stringNode->Id);
         ImGui::BeginVertical("Node");
 
           //Header
           ImGui::BeginHorizontal("Header");
             ImGui::Spring(0, 10.0f);
-            ImGui::TextUnformatted(node->Name.c_str());
+            ImGui::TextUnformatted(stringNode->Name.c_str());
             ImGui::Spring(0, 50.0f);
           ImGui::EndHorizontal();
 
           //Spacing between header and content
-          ImGui::Dummy(ImVec2(0, 28));
+          ImGui::Dummy(ImVec2(0, 14));
 
           //Content
           ImGui::BeginHorizontal("Content");
@@ -168,9 +174,9 @@ namespace Boto::Gui::Node {
             ImGui::PopItemWidth();
             ImGui::Spring(0);
             ne::PushStyleVar(ne::StyleVar_PivotAlignment, ImVec2(1, 0.5f));
-            ne::BeginPin(node->Outputs.back()->Id, ne::PinKind::Output);
-              ImGui::TextUnformatted(node->Outputs.back()->Name.c_str());
-              drawPinIcon(node->Outputs.back(), isPinLinked(node->Outputs.back()->Id, links), 255);
+            ne::BeginPin(stringNode->Outputs.back()->Id, ne::PinKind::Output);
+              ImGui::TextUnformatted(stringNode->Outputs.back()->Name.c_str());
+              drawPinIcon(stringNode->Outputs.back(), isPinLinked(stringNode->Outputs.back()->Id, links), 255);
             ne::EndPin();
             ne::PopStyleVar();
           ImGui::EndHorizontal();
